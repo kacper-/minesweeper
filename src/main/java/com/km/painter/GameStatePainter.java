@@ -1,7 +1,7 @@
 package com.km.painter;
 
-import com.km.game.GameState;
+import com.km.game.Board;
 
 public interface GameStatePainter {
-    void paint(GameState gameState);
+    void paint(Board board);
 }

@@ -2,19 +2,19 @@ package com.km;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 public class MainFrame extends JFrame {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
     private final com.km.painter.Painter painter;
 
-    public MainFrame(com.km.painter.Painter painter, KeyListener keyListener) {
+    public MainFrame(com.km.painter.Painter painter, MouseListener mouseListener) {
         this.painter = painter;
         Display display = new Display();
         painter.setCanvas(display);
         add(display);
-        addKeyListener(keyListener);
+        addMouseListener(mouseListener);
     }
 
     void setUp() {

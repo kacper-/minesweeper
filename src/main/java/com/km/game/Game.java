@@ -1,97 +1,56 @@
 package com.km.game;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import com.km.painter.GameStatePainter;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import static java.awt.event.KeyEvent.*;
-
-public class Game implements KeyListener {
-    private static final int TICK = 50;
+public class Game implements MouseListener {
     private static final int WIDTH = 12;
     private static final int HEIGHT = 18;
-    private static final int BASE_PACE = 26;
     private final GameStatePainter painter;
-    private final GameState gameState;
-    private final Controller controller;
-    private boolean pause = true;
-    private int counter = 0;
+    private final Board board;
 
     public Game(GameStatePainter painter) {
         this.painter = painter;
-        gameState = new GameState(WIDTH, HEIGHT);
-        controller = new Controller(gameState);
+        board = new Board(WIDTH, HEIGHT);
     }
 
     public void start() {
-        setUp();
-        while (true) {
-            timeTick();
-            if (pause)
-                continue;
-            updateState();
-            painter.paint(gameState);
-        }
+        // TODO fill the board with mines
     }
 
     private void updateState() {
-        counter++;
-        if (counter % getPace() == 0) {
-            if (controller.lowerShape() == 0) {
-                // TODO check if row may be removed from the board
-                // TODO update score
-                // TODO update level
-                controller.createShape();
-            }
-        }
-    }
-
-    private void setUp() {
-        controller.createShape();
-    }
-
-    private void timeTick() {
-        try {
-            Thread.sleep(TICK);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private int getPace() {
-        return BASE_PACE - gameState.getLevel();
+        painter.paint(board);
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getKeyCode()) {
-            case VK_SPACE:
-                pause = !pause;
-                break;
-            case VK_A:
-                controller.turnLeft();
-                break;
-            case VK_S:
-                controller.turnRight();
-                break;
-            case VK_D:
-                controller.putDown();
-                break;
-            case VK_RIGHT:
-                controller.moveRight();
-                break;
-            case VK_LEFT:
-                controller.moveLeft();
-                break;
-        }
+    public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {
+    public void mousePressed(MouseEvent e) {
+
     }
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {
+    public void mouseReleased(MouseEvent e) {
+        // TODO update the state of the board after uncovering a field
+        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
+        updateState();
     }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+
+
 }
