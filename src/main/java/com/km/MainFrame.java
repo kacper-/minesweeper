@@ -12,9 +12,9 @@ public class MainFrame extends JFrame {
     public MainFrame(com.km.painter.Painter painter, MouseListener mouseListener) {
         this.painter = painter;
         Display display = new Display();
+        display.addMouseListener(mouseListener);
         painter.setCanvas(display);
         add(display);
-        addMouseListener(mouseListener);
     }
 
     void setUp() {

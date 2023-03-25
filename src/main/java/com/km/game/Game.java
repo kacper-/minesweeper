@@ -26,12 +26,12 @@ public class Game implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
@@ -43,12 +43,12 @@ public class Game implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
 
