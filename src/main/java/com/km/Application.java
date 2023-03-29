@@ -12,5 +12,6 @@ public class Application {
         Game game = new Game(painter);
         MainFrame frame = new MainFrame(painter, game);
         SwingUtilities.invokeLater(frame::setUp);
+        game.start();
     }
 }

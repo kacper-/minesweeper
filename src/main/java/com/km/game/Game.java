@@ -17,7 +17,7 @@ public class Game implements MouseListener {
     }
 
     public void start() {
-        // TODO fill the board with mines
+        painter.paint(board);
     }
 
     private void updateState() {
@@ -26,29 +26,24 @@ public class Game implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO update the state of the board after uncovering a field
         System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
-        updateState();
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println("Clicked at ("+e.getX()+";"+e.getY()+")");
     }
 
 
