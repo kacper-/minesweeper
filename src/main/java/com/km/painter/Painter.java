@@ -46,11 +46,11 @@ public class Painter implements GameStatePainter {
         int tlX = Board.OFFSET + (Board.BLOCK * x);
         int tlY = Board.OFFSET + (Board.BLOCK * y);
         paintCellFrame(g, tlX, tlY);
-        if (mines[x][y]==Board.UNCOVERED_BOMB)
+        if ((mines[x][y] & Board.UNCOVERED_BOMB) == Board.UNCOVERED_BOMB)
             paintCellBomb(g, tlX, tlY);                        
         if (mines[x][y]<Board.BOMB_MAX)
             paintCellNumber(g, tlX, tlY, mines[x][y]);   
-        if (mines[x][y]==Board.MARK)
+        if ((mines[x][y] & Board.MARK) == Board.MARK)
             paintCellMark(g, tlX, tlY);              
     }
 

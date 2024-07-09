@@ -1,11 +1,11 @@
 package com.km.game;
 
+import com.km.painter.GameStatePainter;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.km.painter.GameStatePainter;
 
 public class Game implements MouseListener {
     private static final int WIDTH = 20;
@@ -25,8 +25,18 @@ public class Game implements MouseListener {
 
     private void updateState() {
         board.checkResult();
-        if(!board.isGoing())
+        if (!board.isGoing()) {
+            int[][] mines = board.getMines();
+            int num = 0;
+            for (int x = 0; x < mines.length; x++) {
+                for (int y = 0; y < mines[0].length; y++) {
+                    if ((mines[x][y] & Board.UNCOVERED_BOMB) == Board.UNCOVERED_BOMB)
+                        num++;
+                }
+            }
+            System.out.println("Not found " + num + " out of " + board.getBombCount() + " bombs");
             System.out.println(board.isWin() ? "WON" : "LOST");
+        }
         painter.paint(board);
     }
 
@@ -40,60 +50,63 @@ public class Game implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(board.isGoing()) {        
+        if (board.isGoing()) {
             Cell c = toCell(e);
-            if(outside(c))
+            if (outside(c))
                 return;
-            if(e.getButton()==MouseEvent.BUTTON3) {
-                board.setCell(c.x, c.y, Board.MARK);
+            int[][] mines = board.getMines();
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                if ((mines[c.x][c.y] & Board.MARK) == Board.MARK)
+                    board.setCell(c.x, c.y, mines[c.x][c.y] - Board.MARK);
+                else
+                    board.setCell(c.x, c.y, mines[c.x][c.y] + Board.MARK);
             } else {
-                int mines[][] = board.getMines();
-                if(mines[c.x][c.y]==Board.COVERED_BOMB) 
+                if (mines[c.x][c.y] == Board.COVERED_BOMB)
                     board.finish(false);
-                if(mines[c.x][c.y]==Board.COVERED_EMPTY)
-                    calcCellValue(c);   
+                if (mines[c.x][c.y] == Board.COVERED_EMPTY)
+                    calcCellValue(c);
             }
             updateState();
-        } 
+        }
     }
 
     private void calcCellValue(Cell cell) {
-        if(board.getMines()[cell.x][cell.y]!=Board.COVERED_EMPTY)
+        if ((board.getMines()[cell.x][cell.y] & Board.COVERED_EMPTY) != Board.COVERED_EMPTY)
             return;
         Set<Cell> cells = getArea(cell);
-        long num = cells.stream().filter(c -> board.getMines()[c.x][c.y]==Board.COVERED_BOMB).count();
-        board.setCell(cell.x, cell.y, (int)num);
-        if(num==0)
+        long num = cells.stream().filter(c -> (board.getMines()[c.x][c.y] & Board.COVERED_BOMB) == Board.COVERED_BOMB).count();
+        board.setCell(cell.x, cell.y, (int) num);
+        if (num == 0)
             cells.forEach(this::calcCellValue);
     }
 
     private Set<Cell> getArea(Cell c) {
         Set<Cell> area = new HashSet<>();
-        Cell c1 = new Cell(c.x-1, c.y-1);
-        if(!outside(c1))
+        Cell c1 = new Cell(c.x - 1, c.y - 1);
+        if (!outside(c1))
             area.add(c1);
-        Cell c2 = new Cell(c.x+1, c.y);
-        if(!outside(c2))
+        Cell c2 = new Cell(c.x + 1, c.y);
+        if (!outside(c2))
             area.add(c2);
-        Cell c3 = new Cell(c.x+1, c.y+1);
-        if(!outside(c3))
+        Cell c3 = new Cell(c.x + 1, c.y + 1);
+        if (!outside(c3))
             area.add(c3);
-        Cell c4 = new Cell(c.x+1, c.y-1);
-        if(!outside(c4))
+        Cell c4 = new Cell(c.x + 1, c.y - 1);
+        if (!outside(c4))
             area.add(c4);
-        Cell c5 = new Cell(c.x-1, c.y+1);
-        if(!outside(c5))
+        Cell c5 = new Cell(c.x - 1, c.y + 1);
+        if (!outside(c5))
             area.add(c5);
-        Cell c6 = new Cell(c.x, c.y-1);
-        if(!outside(c6))
+        Cell c6 = new Cell(c.x, c.y - 1);
+        if (!outside(c6))
             area.add(c6);
-        Cell c7 = new Cell(c.x, c.y+1);
-        if(!outside(c7))
+        Cell c7 = new Cell(c.x, c.y + 1);
+        if (!outside(c7))
             area.add(c7);
-        Cell c8 = new Cell(c.x-1, c.y);
-        if(!outside(c8))
+        Cell c8 = new Cell(c.x - 1, c.y);
+        if (!outside(c8))
             area.add(c8);
-                                                                                        
+
         return area;
     }
 
@@ -111,8 +124,8 @@ public class Game implements MouseListener {
 
     private Cell toCell(MouseEvent e) {
         Cell c = new Cell();
-        c.x = (e.getX()-Board.OFFSET) / Board.BLOCK;
-        c.y = (e.getY()-Board.OFFSET) / Board.BLOCK;
+        c.x = (e.getX() - Board.OFFSET) / Board.BLOCK;
+        c.y = (e.getY() - Board.OFFSET) / Board.BLOCK;
         return c;
     }
 
