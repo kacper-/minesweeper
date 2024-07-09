@@ -25,9 +25,9 @@ public class Game implements MouseListener {
 
     private void updateState() {
         board.checkResult();
+        int[][] mines = board.getMines();
+        int num = 0;
         if (!board.isGoing()) {
-            int[][] mines = board.getMines();
-            int num = 0;
             for (int x = 0; x < mines.length; x++) {
                 for (int y = 0; y < mines[0].length; y++) {
                     if ((mines[x][y] & Board.UNCOVERED_BOMB) == Board.UNCOVERED_BOMB)
@@ -36,6 +36,14 @@ public class Game implements MouseListener {
             }
             System.out.println("Not found " + num + " out of " + board.getBombCount() + " bombs");
             System.out.println(board.isWin() ? "WON" : "LOST");
+        } else {
+            for (int x = 0; x < mines.length; x++) {
+                for (int y = 0; y < mines[0].length; y++) {
+                    if ((mines[x][y] & Board.MARK) == Board.MARK)
+                        num++;
+                }
+            }
+            System.out.println("Marked " + num + " out of " + board.getBombCount() + " bombs");
         }
         painter.paint(board);
     }
