@@ -25,8 +25,8 @@ public class Board {
         this.goes = goes;
         this.win = false;
         mines = new int[x][y];
-        posX = 0; //x / 2;
-        posY = 0; //y / 2;
+        posX = x / 2;
+        posY = y / 2;
     }
 
     public void seed() {
@@ -94,27 +94,27 @@ public class Board {
     }
 
     public void cursorUp() {
-        posX--;
-        if (posX < 0)
-            posX = x - 1;
+        posY--;
+        if (posY < 0)
+            posY = y - 1;
     }
 
     public void cursorDown() {
+        posY++;
+        if (posY >= y)
+            posY = 0;
+    }
+
+    public void cursorRight() {
         posX++;
         if (posX >= x)
             posX = 0;
     }
 
-    public void cursorRight() {
-        posY++;
-        if (posY >= 0)
-            posY = 0;
-    }
-
     public void cursorLeft() {
-        posY--;
-        if (posY < 0)
-            posY = y - 1;
+        posX--;
+        if (posX < 0)
+            posX = x - 1;
     }
 
     public int getPosX() {
@@ -123,5 +123,10 @@ public class Board {
 
     public int getPosY() {
         return posY;
+    }
+
+    public void setPos(int x, int y) {
+        posX = x;
+        posY = y;
     }
 }

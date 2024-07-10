@@ -12,8 +12,8 @@ public class MainFrame extends JFrame {
 
     public MainFrame(com.km.painter.Painter painter, MouseListener mouseListener, KeyListener keyListener) {
         this.painter = painter;
-        setFocusable(true);
         Display display = new Display();
+        display.setFocusable(true);
         display.addMouseListener(mouseListener);
         display.addKeyListener(keyListener);
         painter.setCanvas(display);

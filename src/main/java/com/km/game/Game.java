@@ -62,24 +62,9 @@ public class Game implements MouseListener, KeyListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (board.isGoing()) {
-            Cell c = toCell(e);
-            if (outside(c))
-                return;
-            int[][] mines = board.getMines();
-            if (e.getButton() == MouseEvent.BUTTON3) {
-                if ((mines[c.x][c.y] & Board.MARK) == Board.MARK)
-                    board.setCell(c.x, c.y, mines[c.x][c.y] - Board.MARK);
-                else
-                    board.setCell(c.x, c.y, mines[c.x][c.y] + Board.MARK);
-            } else {
-                if (mines[c.x][c.y] == Board.COVERED_BOMB)
-                    board.finish(false);
-                if (mines[c.x][c.y] == Board.COVERED_EMPTY)
-                    calcCellValue(c);
-            }
-            updateState();
-        }
+        Cell c = toCell(e);
+        board.setPos(c.x, c.y);
+        mark(c, e.getButton() == MouseEvent.BUTTON3);
     }
 
     private void calcCellValue(Cell cell) {
@@ -143,24 +128,38 @@ public class Game implements MouseListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println(e.getKeyCode());
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
         switch (e.getKeyCode()) {
-            case VK_DOWN -> board.cursorDown();
-            case VK_UP -> board.cursorUp();
-            case VK_RIGHT -> board.cursorRight();
-            case VK_LEFT -> board.cursorLeft();
+            case VK_DOWN -> {
+                board.cursorDown();
+                painter.paint(board);
+            }
+            case VK_UP -> {
+                board.cursorUp();
+                painter.paint(board);
+            }
+            case VK_RIGHT -> {
+                board.cursorRight();
+                painter.paint(board);
+            }
+            case VK_LEFT -> {
+                board.cursorLeft();
+                painter.paint(board);
+            }
+            case VK_SPACE -> {
+                mark(new Cell(board.getPosX(), board.getPosY()), false);
+            }
+            case VK_ENTER -> {
+                mark(new Cell(board.getPosX(), board.getPosY()), true);
+            }
         }
-        painter.paint(board);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyCode());
     }
 
     private class Cell {
@@ -173,6 +172,26 @@ public class Game implements MouseListener, KeyListener {
         Cell(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+    }
+
+    private void mark(Cell c, boolean mark) {
+        if (board.isGoing()) {
+            if (outside(c))
+                return;
+            int[][] mines = board.getMines();
+            if (mark) {
+                if ((mines[c.x][c.y] & Board.MARK) == Board.MARK)
+                    board.setCell(c.x, c.y, mines[c.x][c.y] - Board.MARK);
+                else
+                    board.setCell(c.x, c.y, mines[c.x][c.y] + Board.MARK);
+            } else {
+                if (mines[c.x][c.y] == Board.COVERED_BOMB)
+                    board.finish(false);
+                if (mines[c.x][c.y] == Board.COVERED_EMPTY)
+                    calcCellValue(c);
+            }
+            updateState();
         }
     }
 }
