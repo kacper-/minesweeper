@@ -2,6 +2,7 @@ package com.km.game;
 
 import com.km.painter.GameStatePainter;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ public class Game implements MouseListener {
     }
 
     private void updateState() {
+        SwingUtilities.invokeLater(() -> painter.paint(board));
         board.checkResult();
         int[][] mines = board.getMines();
         int num = 0;
@@ -34,7 +36,7 @@ public class Game implements MouseListener {
                         num++;
                 }
             }
-            System.out.println("Not found " + num + " out of " + board.getBombCount() + " bombs");
+            System.out.println("Found " + (board.getBombCount() - num) + " out of " + board.getBombCount() + " bombs");
             System.out.println(board.isWin() ? "WON" : "LOST");
         } else {
             for (int x = 0; x < mines.length; x++) {
@@ -45,7 +47,6 @@ public class Game implements MouseListener {
             }
             System.out.println("Marked " + num + " out of " + board.getBombCount() + " bombs");
         }
-        painter.paint(board);
     }
 
     @Override

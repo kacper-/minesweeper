@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Board {
     public static final int OFFSET = 50;
-    public static final int BLOCK = 20;
+    public static final int BLOCK = 25;
     public static final int COVERED_BOMB = 64;
     public static final int COVERED_EMPTY = 16;
     public static final int UNCOVERED_BOMB = 128;
@@ -73,11 +73,11 @@ public class Board {
         int num = 0;
         for (int x = 0; x < mines.length; x++) {
             for (int y = 0; y < mines[0].length; y++) {
-                if (!((mines[x][y] & MARK) == MARK && (mines[x][y] & COVERED_BOMB) == COVERED_BOMB))
+                if ((mines[x][y] & MARK) == MARK && (mines[x][y] & COVERED_BOMB) == COVERED_BOMB)
                     num++;
             }
         }
-        if (num == 0)
+        if (num == bombCount)
             finish(true);
     }
 
