@@ -31,6 +31,7 @@ public class Painter implements GameStatePainter {
     }
 
     private void paintBackground(Graphics g) {
+        g.setColor(Color.BLACK);
         g.drawRect(Board.OFFSET, Board.OFFSET, board.getX() * Board.BLOCK, board.getY() * Board.BLOCK);
     }
 
@@ -55,10 +56,12 @@ public class Painter implements GameStatePainter {
     }
 
     private void paintCellFrame(Graphics g, int x, int y) {
+        g.setColor(Color.BLACK);
         g.drawRect(x, y, Board.BLOCK, Board.BLOCK); 
     }
 
     private void paintCellBomb(Graphics g, int x, int y) {
+        g.setColor(Color.BLACK);
         g.fillOval(x, y, Board.BLOCK, Board.BLOCK); 
     }
 
@@ -70,6 +73,7 @@ public class Painter implements GameStatePainter {
     }
 
     private void paintCellMark(Graphics g, int x, int y) {
+        g.setColor(Color.RED);
         g.drawString("?", x + B_OFF_X, y + B_OFF_Y);
     }
 }
