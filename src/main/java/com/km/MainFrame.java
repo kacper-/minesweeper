@@ -23,9 +23,14 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    class Display extends Canvas {
+    class Display extends JPanel {
         @Override
         public void paint(Graphics g) {
+            painter.paint(g);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
             painter.paint(g);
         }
     }

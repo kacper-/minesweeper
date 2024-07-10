@@ -2,7 +2,6 @@ package com.km.game;
 
 import com.km.painter.GameStatePainter;
 
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
@@ -25,7 +24,7 @@ public class Game implements MouseListener {
     }
 
     private void updateState() {
-        SwingUtilities.invokeLater(() -> painter.paint(board));
+        painter.paint(board);
         board.checkResult();
         int[][] mines = board.getMines();
         int num = 0;

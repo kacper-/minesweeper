@@ -3,13 +3,15 @@ package com.km.painter;
 import java.awt.*;
 import com.km.game.Board;
 
+import javax.swing.*;
+
 public class Painter implements GameStatePainter {
     private static final int B_OFF_X = Board.BLOCK/3;
     private static final int B_OFF_Y = (3*Board.BLOCK)/4;
-    private Canvas canvas;
+    private JPanel canvas;
     private Board board;
 
-    public void setCanvas(Canvas canvas) {
+    public void setCanvas(JPanel canvas) {
         this.canvas = canvas;
     }
 
