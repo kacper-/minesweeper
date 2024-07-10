@@ -30,6 +30,15 @@ public class Painter implements GameStatePainter {
     private void paintGameState(Graphics g) {
         paintBackground(g);
         paintForeground(g);
+        paintCursor(g, board.getPosX(), board.getPosY());
+    }
+
+    private void paintCursor(Graphics g, int posX, int posY) {
+        g.setColor(Color.BLUE);
+        g.drawRect(Board.OFFSET + (board.getPosX() * Board.BLOCK), Board.OFFSET + (board.getPosY() * Board.BLOCK), Board.BLOCK, Board.BLOCK);
+        g.drawRect(Board.OFFSET + (board.getPosX() * Board.BLOCK) + 1, Board.OFFSET + (board.getPosY() * Board.BLOCK) + 1, Board.BLOCK - 2, Board.BLOCK - 2);
+        g.drawRect(Board.OFFSET + (board.getPosX() * Board.BLOCK) + 2, Board.OFFSET + (board.getPosY() * Board.BLOCK) + 2, Board.BLOCK - 4, Board.BLOCK - 4);
+        g.drawRect(Board.OFFSET + (board.getPosX() * Board.BLOCK) + 3, Board.OFFSET + (board.getPosY() * Board.BLOCK) + 3, Board.BLOCK - 6, Board.BLOCK - 6);
     }
 
     private void paintBackground(Graphics g) {

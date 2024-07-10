@@ -2,12 +2,16 @@ package com.km.game;
 
 import com.km.painter.GameStatePainter;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Game implements MouseListener {
+import static java.awt.event.KeyEvent.*;
+
+public class Game implements MouseListener, KeyListener {
     private static final int WIDTH = 20;
     private static final int HEIGHT = 20;
     private final GameStatePainter painter;
@@ -135,6 +139,28 @@ public class Game implements MouseListener {
         c.x = (e.getX() - Board.OFFSET) / Board.BLOCK;
         c.y = (e.getY() - Board.OFFSET) / Board.BLOCK;
         return c;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+        switch (e.getKeyCode()) {
+            case VK_DOWN -> board.cursorDown();
+            case VK_UP -> board.cursorUp();
+            case VK_RIGHT -> board.cursorRight();
+            case VK_LEFT -> board.cursorLeft();
+        }
+        painter.paint(board);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println(e.getKeyCode());
     }
 
     private class Cell {

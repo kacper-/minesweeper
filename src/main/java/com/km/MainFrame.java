@@ -2,6 +2,7 @@ package com.km;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
 public class MainFrame extends JFrame {
@@ -9,10 +10,12 @@ public class MainFrame extends JFrame {
     private static final int WIDTH = 800;
     private final com.km.painter.Painter painter;
 
-    public MainFrame(com.km.painter.Painter painter, MouseListener mouseListener) {
+    public MainFrame(com.km.painter.Painter painter, MouseListener mouseListener, KeyListener keyListener) {
         this.painter = painter;
+        setFocusable(true);
         Display display = new Display();
         display.addMouseListener(mouseListener);
+        display.addKeyListener(keyListener);
         painter.setCanvas(display);
         add(display);
     }
