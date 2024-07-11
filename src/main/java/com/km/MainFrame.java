@@ -31,11 +31,6 @@ public class MainFrame extends JFrame {
         public void paint(Graphics g) {
             painter.paint(g);
         }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            painter.paint(g);
-        }
     }
 }
 
