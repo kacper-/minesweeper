@@ -31,9 +31,9 @@ public class Painter implements GameStatePainter {
     }
 
     private void paintGameState(Graphics g) {
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         paintBackground(g);
         paintForeground(g);
-        paintCursor(g, board.getPosX(), board.getPosY());
     }
 
     private void paintCursor(Graphics g, int posX, int posY) {
@@ -55,6 +55,7 @@ public class Painter implements GameStatePainter {
             for(int y=0;y<mines[0].length;y++)
                 paintCell(g, mines, x, y);
         }
+        paintCursor(g, board.getPosX(), board.getPosY());
     }
 
     private void paintCell(Graphics g, int mines[][], int x, int y) {
