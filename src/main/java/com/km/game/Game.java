@@ -2,16 +2,12 @@ package com.km.game;
 
 import com.km.painter.GameStatePainter;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.awt.event.KeyEvent.*;
-
-public class Game implements MouseListener, KeyListener {
+public class Game implements MouseListener {
     private static final int WIDTH = 20;
     private static final int HEIGHT = 20;
     private final GameStatePainter painter;
@@ -20,11 +16,11 @@ public class Game implements MouseListener, KeyListener {
     public Game(GameStatePainter painter) {
         this.painter = painter;
         board = new Board(WIDTH, HEIGHT, true);
-        board.seed();
         painter.setBoard(board);
     }
 
-    public void start() {
+    public void start(int difficulty) {
+        board.seed(difficulty);
         updateState();
     }
 
@@ -39,8 +35,7 @@ public class Game implements MouseListener, KeyListener {
                         num++;
                 }
             }
-            System.out.println("Found " + (board.getBombCount() - num) + " out of " + board.getBombCount() + " bombs");
-            System.out.println(board.isWin() ? "WON" : "LOST");
+            board.setMessage(board.isWin() ? "WON" : "LOST");
         } else {
             for (int x = 0; x < mines.length; x++) {
                 for (int y = 0; y < mines[0].length; y++) {
@@ -48,7 +43,7 @@ public class Game implements MouseListener, KeyListener {
                         num++;
                 }
             }
-            System.out.println("Marked " + num + " out of " + board.getBombCount() + " bombs");
+            board.setMessage("Marked " + num + " out of " + board.getBombCount() + " bombs");
         }
         painter.paint();
     }
@@ -127,40 +122,32 @@ public class Game implements MouseListener, KeyListener {
         return c;
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    public void actionDown() {
+        board.cursorDown();
+        painter.paint();
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case VK_DOWN -> {
-                board.cursorDown();
-                painter.paint();
-            }
-            case VK_UP -> {
-                board.cursorUp();
-                painter.paint();
-            }
-            case VK_RIGHT -> {
-                board.cursorRight();
-                painter.paint();
-            }
-            case VK_LEFT -> {
-                board.cursorLeft();
-                painter.paint();
-            }
-            case VK_SPACE -> {
-                mark(new Cell(board.getPosX(), board.getPosY()), false);
-            }
-            case VK_ENTER -> {
-                mark(new Cell(board.getPosX(), board.getPosY()), true);
-            }
-        }
+    public void actionUp() {
+        board.cursorUp();
+        painter.paint();
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+    public void actionRight() {
+        board.cursorRight();
+        painter.paint();
+    }
+
+    public void actionLeft() {
+        board.cursorLeft();
+        painter.paint();
+    }
+
+    public void actionUncover() {
+        mark(new Cell(board.getPosX(), board.getPosY()), false);
+    }
+
+    public void actionMark() {
+        mark(new Cell(board.getPosX(), board.getPosY()), true);
     }
 
     private class Cell {

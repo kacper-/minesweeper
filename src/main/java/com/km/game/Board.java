@@ -3,7 +3,7 @@ package com.km.game;
 import java.util.Random;
 
 public class Board {
-    public static final int OFFSET = 50;
+    public static final int OFFSET = 25;
     public static final int BLOCK = 25;
     public static final int COVERED_BOMB = 64;
     public static final int COVERED_EMPTY = 16;
@@ -18,6 +18,7 @@ public class Board {
     private int bombCount = 0;
     private int posX;
     private int posY;
+    private String message = "";
 
     public Board(int x, int y, boolean goes) {
         this.x = x;
@@ -29,15 +30,29 @@ public class Board {
         posY = y / 2;
     }
 
-    public void seed() {
+    public int getBombCount() {
+        return bombCount;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void seed(int difficulty) {
+        goes = true;
+        bombCount = 0;
         for (int x = 0; x < mines.length; x++) {
             for (int y = 0; y < mines[0].length; y++) {
-                mines[x][y] = new Random().nextInt(8) == 0 ? COVERED_BOMB : COVERED_EMPTY;
+                mines[x][y] = new Random().nextInt(difficulty) == 0 ? COVERED_BOMB : COVERED_EMPTY;
                 if (mines[x][y] == COVERED_BOMB)
                     bombCount++;
             }
         }
-        System.out.println("Created " + bombCount + " bombs");
+        setMessage("Created " + bombCount + " bombs");
     }
 
     public int getX() {
@@ -87,10 +102,6 @@ public class Board {
 
     public void setCell(int x, int y, int val) {
         mines[x][y] = val;
-    }
-
-    public int getBombCount() {
-        return bombCount;
     }
 
     public void cursorUp() {

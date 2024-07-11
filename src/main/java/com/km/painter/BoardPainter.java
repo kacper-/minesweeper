@@ -1,13 +1,13 @@
 package com.km.painter;
 
-import java.awt.*;
 import com.km.game.Board;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class Painter implements GameStatePainter {
-    private static final int B_OFF_X = Board.BLOCK/3;
-    private static final int B_OFF_Y = (3*Board.BLOCK)/4;
+public class BoardPainter implements GameStatePainter {
+    private static final int B_OFF_X = Board.BLOCK / 3;
+    private static final int B_OFF_Y = (3 * Board.BLOCK) / 4;
     private JPanel canvas;
     private Board board;
 
@@ -51,11 +51,17 @@ public class Painter implements GameStatePainter {
 
     private void paintForeground(Graphics g) {
         int mines[][] = board.getMines();
-        for(int x=0;x<mines.length;x++) {
-            for(int y=0;y<mines[0].length;y++)
+        for (int x = 0; x < mines.length; x++) {
+            for (int y = 0; y < mines[0].length; y++)
                 paintCell(g, mines, x, y);
         }
         paintCursor(g, board.getPosX(), board.getPosY());
+        paintMessage(g, board.getMessage());
+    }
+
+    private void paintMessage(Graphics g, String message) {
+        g.setColor(Color.RED);
+        g.drawString(message, 4 * Board.OFFSET, (board.getY() * Board.BLOCK) + 2 * Board.OFFSET);
     }
 
     private void paintCell(Graphics g, int mines[][], int x, int y) {
@@ -63,26 +69,30 @@ public class Painter implements GameStatePainter {
         int tlY = Board.OFFSET + (Board.BLOCK * y);
         paintCellFrame(g, tlX, tlY);
         if ((mines[x][y] & Board.UNCOVERED_BOMB) == Board.UNCOVERED_BOMB)
-            paintCellBomb(g, tlX, tlY);                        
-        if (mines[x][y]<Board.BOMB_MAX)
-            paintCellNumber(g, tlX, tlY, mines[x][y]);   
+            paintCellBomb(g, tlX, tlY);
+        if (mines[x][y] < Board.BOMB_MAX)
+            paintCellNumber(g, tlX, tlY, mines[x][y]);
         if ((mines[x][y] & Board.MARK) == Board.MARK)
-            paintCellMark(g, tlX, tlY);              
+            paintCellMark(g, tlX, tlY);
     }
 
     private void paintCellFrame(Graphics g, int x, int y) {
         g.setColor(Color.BLACK);
-        g.drawRect(x, y, Board.BLOCK, Board.BLOCK); 
+        g.drawRect(x, y, Board.BLOCK, Board.BLOCK);
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(x + 1, y + 1, Board.BLOCK - 2, Board.BLOCK - 2);
     }
 
     private void paintCellBomb(Graphics g, int x, int y) {
+        g.setColor(Color.WHITE);
+        g.fillRect(x + 1, y + 1, Board.BLOCK - 2, Board.BLOCK - 2);
         g.setColor(Color.BLACK);
-        g.fillOval(x, y, Board.BLOCK, Board.BLOCK); 
+        g.fillOval(x + 4, y + 4, Board.BLOCK - 8, Board.BLOCK - 8);
     }
 
     private void paintCellNumber(Graphics g, int x, int y, int state) {
         g.setColor(Color.WHITE);
-        g.fillRect(x+1, y+1, Board.BLOCK-2, Board.BLOCK-2); 
+        g.fillRect(x + 1, y + 1, Board.BLOCK - 2, Board.BLOCK - 2);
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(state), x + B_OFF_X, y + B_OFF_Y);
     }
