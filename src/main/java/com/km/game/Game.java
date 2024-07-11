@@ -21,6 +21,7 @@ public class Game implements MouseListener, KeyListener {
         this.painter = painter;
         board = new Board(WIDTH, HEIGHT, true);
         board.seed();
+        painter.setBoard(board);
     }
 
     public void start() {
@@ -28,7 +29,6 @@ public class Game implements MouseListener, KeyListener {
     }
 
     private void updateState() {
-        painter.paint(board);
         board.checkResult();
         int[][] mines = board.getMines();
         int num = 0;
@@ -50,6 +50,7 @@ public class Game implements MouseListener, KeyListener {
             }
             System.out.println("Marked " + num + " out of " + board.getBombCount() + " bombs");
         }
+        painter.paint();
     }
 
     @Override
@@ -135,19 +136,19 @@ public class Game implements MouseListener, KeyListener {
         switch (e.getKeyCode()) {
             case VK_DOWN -> {
                 board.cursorDown();
-                painter.paint(board);
+                painter.paint();
             }
             case VK_UP -> {
                 board.cursorUp();
-                painter.paint(board);
+                painter.paint();
             }
             case VK_RIGHT -> {
                 board.cursorRight();
-                painter.paint(board);
+                painter.paint();
             }
             case VK_LEFT -> {
                 board.cursorLeft();
-                painter.paint(board);
+                painter.paint();
             }
             case VK_SPACE -> {
                 mark(new Cell(board.getPosX(), board.getPosY()), false);

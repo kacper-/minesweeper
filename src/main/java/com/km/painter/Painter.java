@@ -11,12 +11,15 @@ public class Painter implements GameStatePainter {
     private JPanel canvas;
     private Board board;
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     public void setCanvas(JPanel canvas) {
         this.canvas = canvas;
     }
 
-    public void paint(Board board) {
-        this.board = board;
+    public void paint() {
         canvas.repaint();
     }
 
